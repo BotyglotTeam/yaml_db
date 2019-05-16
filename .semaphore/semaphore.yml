@@ -1,0 +1,38 @@
+version: v1.0
+name: Yaml DB
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: "RSPEC"
+    task:
+      env_vars:
+        - name: RAILS_ENV
+          value: test
+        - name: RACK_ENV
+          value: test
+      prologue:
+        commands:
+          - sem-version ruby $RUBY_VERSION
+      jobs:
+        - name: Build
+          matrix:
+            - env_var: RAILS_VERSION
+              values:
+                - '~> 5.1.0'
+                - '~> 5.2.0'
+            - env_var: RUBY_VERSION
+              values:
+                - '2.5.0'
+                - '2.5.1'
+                - '2.5.2'
+                - '2.5.3'
+                - '2.6.0'
+          commands:
+            - checkout --use-cache
+            # requires bundler 2.0
+            - gem install bundler --no-document
+            # no need to use cache since we do not commit Gemfile.lock
+            - bundle install -j 4 --path vendor/bundle
+            - bundle exec rspec

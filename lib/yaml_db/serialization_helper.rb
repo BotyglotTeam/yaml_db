@@ -40,7 +40,7 @@ module YamlDb
 
       def load_from_dir(dirname, truncate = true)
         Dir.entries(dirname).each do |filename|
-          if filename =~ /^[.]/
+          if filename =~ /^[.]/ || !@loader.tables.include?(filename.split('.').first)
             next
           end
           @loader.load(File.new("#{dirname}/#{filename}", "r"), truncate)
@@ -99,6 +99,10 @@ module YamlDb
         end
       end
 
+      def self.tables
+        ActiveRecord::Base.connection.tables.reject { |table| ['schema_info', 'schema_migrations'].include?(table) }.sort
+      end
+
     end
 
     module Utils
@@ -149,7 +153,6 @@ module YamlDb
 
     class Dump
       def self.before_table(io, table)
-
       end
 
       def self.dump(io)

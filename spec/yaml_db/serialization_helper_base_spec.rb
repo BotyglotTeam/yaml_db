@@ -20,6 +20,7 @@ module YamlDb
         allow(@dumper).to receive(:tables).and_return([ActiveRecord::Base.connection.tables[0]])
         allow(@dumper).to receive(:before_table).and_return(nil)
         allow(@dumper).to receive(:after_table).and_return(nil)
+        allow(@loader).to receive(:tables).and_return([ActiveRecord::Base.connection.tables[0]])
       end
 
       context "for multi-file dumps" do
