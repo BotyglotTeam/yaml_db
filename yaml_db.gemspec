@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "bundler", "~> 2.0"
   s.add_development_dependency "rspec", "~> 3.0"
-  s.add_development_dependency "sqlite3", "~> 1.3.4"
+  s.add_development_dependency "sqlite3", "~> 1.4"
 end
